@@ -85,6 +85,8 @@ namespace Solitare
         {
             spriteBatch.Begin();
 
+            spriteBatch.Draw(GameState.background, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+
             spriteBatch.DrawString(GameState.gameFont, "Play Again", Layout.PlayAgain, Color.Yellow);
 
             //Draws the cardback
@@ -186,7 +188,14 @@ namespace Solitare
         {
             spriteBatch.Begin();
 
+            spriteBatch.Draw(MenuState.background, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0f);
 
+            spriteBatch.Draw(MenuState.solitareTitle, Layout.SolitareTitle, null, Color.White, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
+
+            spriteBatch.Draw(MenuState.solitareMenu, Layout.SolitareMenu, null, Color.White, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
+                       
+            spriteBatch.Draw(MenuState.menuHand, MenuState.menuHandPos, null, Color.White, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
+           
 
             spriteBatch.End();
         }

@@ -21,6 +21,7 @@ namespace Solitare.States
         public static MovingCardManager mcm;
         public static MovingStackManager msm;
 
+        public static Texture2D background;
         public static SpriteFont gameFont;
 
         double clickTimer;
@@ -30,6 +31,7 @@ namespace Solitare.States
 
         public GameState(Game1 _game, GraphicsDevice _graphicsDevice, ContentManager _content) : base(_game, _graphicsDevice, _content)
         {
+            background = content.Load<Texture2D>("Images/Backgrounds/background2");
             gameFont = content.Load<SpriteFont>("gameFont");
 
             deckManager = new DeckManager();

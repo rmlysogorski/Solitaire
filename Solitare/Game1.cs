@@ -59,7 +59,7 @@ namespace Solitare
             
 
             //Set this to whatever state should load first, usually the menu
-            currentState = new GameState(this, graphics.GraphicsDevice, Content);
+            currentState = new MenuState(this, graphics.GraphicsDevice, Content);
         }
 
         /// <summary>
