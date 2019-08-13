@@ -17,10 +17,8 @@ namespace Solitare.States
         //private List<Component> components; //Put buttons, etc. in here
 
         public static Texture2D background;
-        public static Texture2D solitareTitle;
-        public static Texture2D solitareMenu;
-        public static Texture2D menuHand;
-        public static Vector2 menuHandPos;
+        public static Texture2D playButton;
+        public static Texture2D exitButton;
 
         SoundEffect selectMenuItem;
         bool smiPlayed;
@@ -28,21 +26,20 @@ namespace Solitare.States
         MouseState mState;
         MouseState pmState;
 
-        double handTimer;
+        float playDist;
+        float exitDist;
+
 
         public MenuState(Game1 _game, GraphicsDevice _graphicsDevice, ContentManager _content) : base(_game, _graphicsDevice, _content)
         {
             background = content.Load<Texture2D>("Images/Backgrounds/background1");
-            solitareTitle = content.Load<Texture2D>("Images/MenuItems/solitaireTitle");
-            solitareMenu = content.Load<Texture2D>("Images/MenuItems/solitareMenu");
-            menuHand = content.Load<Texture2D>("Images/MenuItems/menuHand");
+            playButton = content.Load<Texture2D>("Images/MenuItems/playButton");
+            exitButton = content.Load<Texture2D>("Images/MenuItems/exitButton");
 
             selectMenuItem = content.Load<SoundEffect>("Sounds/SoundEffects/selectMenuItem");
             smiPlayed = false;
 
-            menuHandPos = Layout.MenuHandPlay[0];
             pmState = Mouse.GetState();
-            handTimer = 0;
         }
 
         public override void Draw(GameTime gameTime, Renderer r)
@@ -53,83 +50,43 @@ namespace Solitare.States
         public override void Update(GameTime gameTime)
         {
             mState = Mouse.GetState();
+            playDist = Vector2.Distance(Layout.MenuPlayButton, new Vector2(mState.X, mState.Y));
+            exitDist = Vector2.Distance(Layout.MenuExitButton, new Vector2(mState.X, mState.Y));
 
-            handTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-
-            if (Layout.MenuPlayBox.Contains(mState.Position))
+            if (playDist < Layout.ButtonRadius
+                || exitDist < Layout.ButtonRadius)
             {
                 if (!smiPlayed)
                 {
                     selectMenuItem.Play();
                     smiPlayed = true;
                 }
+            }
 
-                if(menuHandPos == Layout.MenuHandPlay[1])
-                {
-                    menuHandPos = Layout.MenuHandPlay[1];
-                }
-                else
-                {
-                    menuHandPos = Layout.MenuHandPlay[0];
-                }
-
-                if (MouseInput.CheckForSingleClick(pmState))
+            if (MouseInput.CheckForSingleClick(pmState))
+            {
+                if (playDist < Layout.ButtonRadius)
                 {
                     game.ChangeToGameState();
                 }
-            }
-            else if (Layout.MenuExitBox.Contains(mState.Position))
-            {
-                if (!smiPlayed)
-                {
-                    selectMenuItem.Play();
-                    smiPlayed = true;
-                }
-
-                if (menuHandPos == Layout.MenuHandExit[1])
-                {
-                    menuHandPos = Layout.MenuHandExit[1];
-                }
-                else
-                {
-                    menuHandPos = Layout.MenuHandExit[0];
-                }
-
-                if (MouseInput.CheckForSingleClick(pmState))
+                if(exitDist < Layout.ButtonRadius)
                 {
                     game.Exit();
                 }
             }
+
+
         }
         public override void PostUpdate(GameTime gameTime)
         {
-            if(!Layout.MenuPlayBox.Contains(mState.Position)
-                && !Layout.MenuExitBox.Contains(mState.Position))
+            if(smiPlayed
+                && playDist > Layout.ButtonRadius
+                && exitDist > Layout.ButtonRadius)
             {
                 smiPlayed = false;
             }
-
-            if(handTimer > 1000)
-            {
-                if(menuHandPos == Layout.MenuHandPlay[0])
-                {
-                    menuHandPos = Layout.MenuHandPlay[1];
-                }
-                else if(menuHandPos == Layout.MenuHandPlay[1])
-                {
-                    menuHandPos = Layout.MenuHandPlay[0];
-                }
-                else if(menuHandPos == Layout.MenuHandExit[0])
-                {
-                    menuHandPos = Layout.MenuHandExit[1];
-                }
-                else if (menuHandPos == Layout.MenuHandExit[1])
-                {
-                    menuHandPos = Layout.MenuHandExit[0];
-                }
-
-                handTimer = 0;
-            }
+            
+           
             pmState = mState;
         }
     }

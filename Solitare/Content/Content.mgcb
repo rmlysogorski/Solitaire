@@ -20,7 +20,7 @@
 /processorParam:TextureFormat=Compressed
 /build:gameFont.spritefont
 
-#begin Images/Backgrounds/background1.jpg
+#begin Images/Backgrounds/background1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -30,7 +30,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Backgrounds/background1.jpg
+/build:Images/Backgrounds/background1.png
 
 #begin Images/Backgrounds/background2.JPG
 /importer:TextureImporter
@@ -692,7 +692,7 @@
 /processorParam:TextureFormat=Color
 /build:Images/Cards/Spades/9.png
 
-#begin Images/MenuItems/menuHand.png
+#begin Images/MenuItems/exitButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -702,9 +702,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/MenuItems/menuHand.png
+/build:Images/MenuItems/exitButton.png
 
-#begin Images/MenuItems/solitaireTitle.png
+#begin Images/MenuItems/playButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -714,19 +714,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/MenuItems/solitaireTitle.png
-
-#begin Images/MenuItems/solitareMenu.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Images/MenuItems/solitareMenu.png
+/build:Images/MenuItems/playButton.png
 
 #begin menuFont.spritefont
 /importer:FontDescriptionImporter

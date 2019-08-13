@@ -188,14 +188,11 @@ namespace Solitare
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(MenuState.background, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 0.6f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(MenuState.background, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
-            spriteBatch.Draw(MenuState.solitareTitle, Layout.SolitareTitle, null, Color.White, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(MenuState.playButton, new Vector2(Layout.MenuPlayButton.X - Layout.ButtonRadius, Layout.MenuPlayButton.Y - Layout.ButtonRadius), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
-            spriteBatch.Draw(MenuState.solitareMenu, Layout.SolitareMenu, null, Color.White, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
-                       
-            spriteBatch.Draw(MenuState.menuHand, MenuState.menuHandPos, null, Color.White, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
-           
+            spriteBatch.Draw(MenuState.exitButton, new Vector2(Layout.MenuExitButton.X - Layout.ButtonRadius, Layout.MenuExitButton.Y - Layout.ButtonRadius), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
             spriteBatch.End();
         }

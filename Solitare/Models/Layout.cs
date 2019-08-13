@@ -15,13 +15,9 @@ namespace Solitare.Models
         private static int tableauTop = 50;
         private static int verticalOffset = 35;
 
-        private static Vector2 solitareTitle = new Vector2(100, 100);
-        private static Vector2 solitareMenu = new Vector2(175, 300);
-        private static Vector2[] menuHandPlay = new Vector2[2] { new Vector2(200, 335), new Vector2(205, 335) };
-        private static Vector2[] menuHandExit = new Vector2[2] { new Vector2(380, 335), new Vector2(385, 335) };
-
-        private static Rectangle menuPlayBox = new Rectangle(270, 325, 85, 50);
-        private static Rectangle menuExitBox = new Rectangle(430, 325, 100, 50);
+        private static Vector2 menuPlayButton = new Vector2(1260, 935);
+        private static Vector2 menuExitButton = new Vector2(1110, 935);
+        private static int buttonRadius = 60;
 
         private static Vector2 playAgain = new Vector2(100, 100);
         private static Vector2 deck = new Vector2(50, 775);
@@ -42,13 +38,9 @@ namespace Solitare.Models
         public static float CardScale { get => cardScale; }
         public static int VerticalOffset { get => verticalOffset; }
 
-        public static Vector2 SolitareTitle { get => solitareTitle; }
-        public static Vector2 SolitareMenu { get => solitareMenu; }
-        public static Vector2[] MenuHandPlay { get => menuHandPlay; }
-        public static Vector2[] MenuHandExit { get => menuHandExit; }
-
-        public static Rectangle MenuPlayBox { get => menuPlayBox; }
-        public static Rectangle MenuExitBox { get => menuExitBox; }
+        public static Vector2 MenuPlayButton { get => menuPlayButton; }
+        public static Vector2 MenuExitButton { get => menuExitButton; }
+        public static int ButtonRadius { get => buttonRadius; }
 
         public static Vector2 PlayAgain { get => playAgain; }
         public static Vector2 Deck { get => deck; }
