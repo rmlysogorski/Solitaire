@@ -704,7 +704,7 @@
 /processorParam:TextureFormat=Color
 /build:Images/MenuItems/menuHand.png
 
-#begin Images/MenuItems/solitardTitle.png
+#begin Images/MenuItems/solitaireTitle.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -714,7 +714,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/MenuItems/solitardTitle.png;Images/MenuItems/solitareTitle.png
+/build:Images/MenuItems/solitaireTitle.png
 
 #begin Images/MenuItems/solitareMenu.png
 /importer:TextureImporter

@@ -33,7 +33,7 @@ namespace Solitare.States
         public MenuState(Game1 _game, GraphicsDevice _graphicsDevice, ContentManager _content) : base(_game, _graphicsDevice, _content)
         {
             background = content.Load<Texture2D>("Images/Backgrounds/background1");
-            solitareTitle = content.Load<Texture2D>("Images/MenuItems/solitareTitle");
+            solitareTitle = content.Load<Texture2D>("Images/MenuItems/solitaireTitle");
             solitareMenu = content.Load<Texture2D>("Images/MenuItems/solitareMenu");
             menuHand = content.Load<Texture2D>("Images/MenuItems/menuHand");
 

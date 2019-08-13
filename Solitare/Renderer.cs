@@ -188,7 +188,7 @@ namespace Solitare
         {
             spriteBatch.Begin();
 
-            spriteBatch.Draw(MenuState.background, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 0.8f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(MenuState.background, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 0.6f, SpriteEffects.None, 0f);
 
             spriteBatch.Draw(MenuState.solitareTitle, Layout.SolitareTitle, null, Color.White, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
 
