@@ -32,7 +32,7 @@
 /processorParam:TextureFormat=Color
 /build:Images/Backgrounds/background1.png
 
-#begin Images/Backgrounds/background2.JPG
+#begin Images/Backgrounds/background2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -42,7 +42,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/Backgrounds/background2.JPG
+/build:Images/Backgrounds/background2.png
 
 #begin Images/Cards/Backs/1.jpg
 /importer:TextureImporter
@@ -67,6 +67,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Images/Cards/Backs/2.png
+
+#begin Images/Cards/cardShadow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Cards/cardShadow.png
 
 #begin Images/Cards/Clubs/1.png
 /importer:TextureImporter
@@ -704,6 +716,18 @@
 /processorParam:TextureFormat=Color
 /build:Images/MenuItems/exitButton.png
 
+#begin Images/MenuItems/playAgainButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/MenuItems/playAgainButton.png
+
 #begin Images/MenuItems/playButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -716,12 +740,31 @@
 /processorParam:TextureFormat=Color
 /build:Images/MenuItems/playButton.png
 
+#begin Images/MenuItems/postit.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/MenuItems/postit.png
+
 #begin menuFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:menuFont.spritefont
+
+#begin pencil.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:pencil.spritefont
 
 #begin Sounds/SoundEffects/selectMenuItem.wav
 /importer:WavImporter

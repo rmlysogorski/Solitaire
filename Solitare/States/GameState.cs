@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -22,7 +23,21 @@ namespace Solitare.States
         public static MovingStackManager msm;
 
         public static Texture2D background;
+        public static Texture2D cardShadow;
         public static SpriteFont gameFont;
+
+        public static Texture2D playAgainButton;
+        public static Texture2D exitButton;
+
+        public static Texture2D postit;
+        public static SpriteFont pencil;
+        public static int score;
+
+        float playAgainDist;
+        float exitDist;
+
+        SoundEffect selectMenuItem;
+        bool smiPlayed;
 
         double clickTimer;
 
@@ -43,8 +58,20 @@ namespace Solitare.States
                 SpriteTexture = content.Load<Texture2D>("Images/Cards/Backs/2")
             };
 
+            cardShadow = content.Load<Texture2D>("Images/Cards/cardShadow");
+
+            playAgainButton = content.Load<Texture2D>("Images/MenuItems/playAgainButton");
+            exitButton = content.Load<Texture2D>("Images/MenuItems/exitButton");
+
+            postit = content.Load<Texture2D>("Images/MenuItems/postit");
+            pencil = content.Load<SpriteFont>("pencil");
+            score = 0;
+
             deckManager.CreateFoundationPiles(_content);
             deckManager.PopulateTableaus();
+
+            selectMenuItem = content.Load<SoundEffect>("Sounds/SoundEffects/selectMenuItem");
+            smiPlayed = false;
 
             pmState = Mouse.GetState();
 
@@ -64,20 +91,38 @@ namespace Solitare.States
         {
             mState = Mouse.GetState();
             CollisionManager cm = new CollisionManager(mState, pmState);
+            playAgainDist = Vector2.Distance(Layout.PlayAgain, new Vector2(mState.X, mState.Y));
+            exitDist = Vector2.Distance(Layout.Exit, new Vector2(mState.X, mState.Y));
 
-            if(!mcm.MovingCard.IsMoving && !msm.StackIsMoving)
+            if (!mcm.MovingCard.IsMoving && !msm.StackIsMoving)
             {
-                if(MouseInput.CheckForSingleClick(pmState)
-                    && new Rectangle((int)Layout.PlayAgain.X, (int)Layout.PlayAgain.Y, 135, 30).Contains(mState.Position))
+                if (playAgainDist < Layout.ButtonRadius
+                || exitDist < Layout.ButtonRadius)
                 {
-                    game.ChangeToGameState();
+                    if (!smiPlayed)
+                    {
+                        selectMenuItem.Play();
+                        smiPlayed = true;
+                    }
+                }
+
+                if (MouseInput.CheckForSingleClick(pmState))
+                {
+                    if (playAgainDist < Layout.ButtonRadius)
+                    {
+                        game.ChangeToGameState();
+                    }
+                    if (exitDist < Layout.ButtonRadius)
+                    {
+                        game.Exit();
+                    }
                 }
 
                 deckManager.SendDoubleClicksToFoundation(mState, pmState, gameTime, clickTimer);
 
                 deckManager.ClickToFlipTableauCard(mState, pmState);
 
-                if (cm.DeckPileClick())
+                if (cm.DeckPileClick(deckManager))
                 {
                     if (deckManager.CardsInPlay["Deck"].Length <= 0)
                     {
@@ -144,6 +189,11 @@ namespace Solitare.States
 
         public override void PostUpdate(GameTime gameTime)
         {
+            int hearts = deckManager.CardsInPlay["Hearts"].Length - 1;
+            int spades = deckManager.CardsInPlay["Spades"].Length - 1;
+            int diamonds = deckManager.CardsInPlay["Diamonds"].Length - 1;
+            int clubs = deckManager.CardsInPlay["Clubs"].Length - 1;
+
             if (MouseInput.CheckForDoubleClick(pmState, gameTime, clickTimer))
             {
                 clickTimer = 0;
@@ -152,6 +202,19 @@ namespace Solitare.States
             {
                 clickTimer = gameTime.TotalGameTime.TotalMilliseconds;
             }
+            if (smiPlayed
+                && playAgainDist > Layout.ButtonRadius
+                && exitDist > Layout.ButtonRadius)
+            {
+                smiPlayed = false;
+            }
+            score = hearts + spades + diamonds + clubs;
+            score *= 10;
+            if(hearts > 13)
+            {
+                score += 120;
+            }
+            
             pmState = mState;
         }
     }

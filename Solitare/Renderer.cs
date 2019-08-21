@@ -83,21 +83,48 @@ namespace Solitare
 
         protected void DrawGameScene()
         {
+            int shadowOffset = 5;
+
             spriteBatch.Begin();
 
             spriteBatch.Draw(GameState.background, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
-            spriteBatch.DrawString(GameState.gameFont, "Play Again", Layout.PlayAgain, Color.Yellow);
+            //spriteBatch.DrawString(GameState.gameFont, "Play Again", Layout.PlayAgain, Color.Yellow);
 
             //Draws the cardback
             if (GameState.deckManager.CardsInPlay["Deck"].Length > 1
                 || (GameState.deckManager.CardsInPlay["Deck"].Length == 1 && !GameState.deckManager.CardWasAlreadyDrawn)
                 || (GameState.mcm.MovingCard.IsMoving && GameState.mcm.MovingCard.PilePosition == Layout.DrawPile && GameState.deckManager.CardsInPlay["Deck"].Length == 1))
             {
-                spriteBatch.Draw(
-                    GameState.cardBack.SpriteTexture,
-                    Layout.Deck, null, Color.LightBlue, 0f, Vector2.Zero, Layout.CardScale, SpriteEffects.None, 0f
+                for(int i = 0; 
+                    (GameState.deckManager.CardWasAlreadyDrawn? 
+                        i < GameState.deckManager.CardsInPlay["Deck"].Length - 1 : 
+                        i < GameState.deckManager.CardsInPlay["Deck"].Length);
+                    i++)
+                {
+                    spriteBatch.Draw(
+                    GameState.cardShadow,
+                    new Vector2(Layout.Deck.X + i * 3 + shadowOffset,
+                        Layout.Deck.Y + shadowOffset),
+                    null, Color.White, 0f, Vector2.Zero, Layout.CardScale, SpriteEffects.None, 0f
                     );
+
+                    spriteBatch.Draw(
+                        GameState.cardBack.SpriteTexture,
+                        new Vector2(Layout.Deck.X + i * 3,
+                        Layout.Deck.Y), 
+                        null, Color.LightBlue, 0f, Vector2.Zero, Layout.CardScale, SpriteEffects.None, 0f
+                        );
+                }
+                
+            }
+            else
+            {
+                spriteBatch.Draw(
+                        GameState.cardShadow,
+                        Layout.Deck,
+                        null, Color.LightBlue, 0f, Vector2.Zero, Layout.CardScale, SpriteEffects.None, 0f
+                        );
             }
 
             //Draws the Draw Pile
@@ -106,6 +133,14 @@ namespace Solitare
                 && GameState.mcm.MovingCard.PilePosition != Layout.DrawPile
                 && GameState.deckManager.CardsInPlay["Deck"][GameState.deckManager.CardsInPlay["Deck"].Length - 1].PilePosition == Layout.DrawPile)
             {
+                spriteBatch.Draw(
+                    GameState.cardShadow,
+                    new Vector2(
+                        GameState.deckManager.CardsInPlay["Deck"][GameState.deckManager.CardsInPlay["Deck"].Length - 1].Position.X + shadowOffset,
+                        GameState.deckManager.CardsInPlay["Deck"][GameState.deckManager.CardsInPlay["Deck"].Length - 1].Position.Y + shadowOffset),
+                    null, Color.White, 0f, Vector2.Zero, Layout.CardScale, SpriteEffects.None, 0f
+                    );
+
                 spriteBatch.Draw(
                     GameState.deckManager.CardsInPlay["Deck"][GameState.deckManager.CardsInPlay["Deck"].Length - 1].SpriteTexture,
                     GameState.deckManager.CardsInPlay["Deck"][GameState.deckManager.CardsInPlay["Deck"].Length - 1].Position,
@@ -117,6 +152,13 @@ namespace Solitare
             if(GameState.deckManager.CardsInPlay["Waste"].Length > 0)
             {
                 spriteBatch.Draw(
+                    GameState.cardShadow,
+                    new Vector2(Layout.WastePile.X + shadowOffset,
+                    Layout.WastePile.Y + shadowOffset), 
+                    null, Color.White, 0f, Vector2.Zero, Layout.CardScale, SpriteEffects.None, 0f
+                    );
+
+                spriteBatch.Draw(
                     GameState.deckManager.CardsInPlay["Waste"][GameState.deckManager.CardsInPlay["Waste"].Length - 1].SpriteTexture,
                     Layout.WastePile, null, Color.White, 0f, Vector2.Zero, Layout.CardScale, SpriteEffects.None, 0f
                     );
@@ -124,6 +166,35 @@ namespace Solitare
             }
 
             //Draws the four Foundation Piles
+            if(GameState.deckManager.CardsInPlay["Hearts"].Length > 1)
+            {
+                spriteBatch.Draw(
+                    GameState.cardShadow, new Vector2(Layout.HeartsPile.X + shadowOffset, Layout.HeartsPile.Y + shadowOffset), null,
+                    Color.White, 0f, Vector2.Zero, Layout.CardScale, SpriteEffects.None, 0f
+                    );
+            }
+            if (GameState.deckManager.CardsInPlay["Spades"].Length > 1)
+            {
+                spriteBatch.Draw(
+                    GameState.cardShadow, new Vector2(Layout.SpadesPile.X + shadowOffset, Layout.SpadesPile.Y + shadowOffset), null,
+                    Color.White, 0f, Vector2.Zero, Layout.CardScale, SpriteEffects.None, 0f
+                    );
+            }
+            if (GameState.deckManager.CardsInPlay["Diamonds"].Length > 1)
+            {
+                spriteBatch.Draw(
+                    GameState.cardShadow, new Vector2(Layout.DiamondsPile.X + shadowOffset, Layout.DiamondsPile.Y + shadowOffset), null,
+                    Color.White, 0f, Vector2.Zero, Layout.CardScale, SpriteEffects.None, 0f
+                    );
+            }
+            if (GameState.deckManager.CardsInPlay["Clubs"].Length > 1)
+            {
+                spriteBatch.Draw(
+                    GameState.cardShadow, new Vector2(Layout.ClubsPile.X + shadowOffset, Layout.ClubsPile.Y + shadowOffset), null,
+                    Color.White, 0f, Vector2.Zero, Layout.CardScale, SpriteEffects.None, 0f
+                    );
+            }
+
             spriteBatch.Draw(
                     GameState.deckManager.CardsInPlay["Hearts"][GameState.deckManager.CardsInPlay["Hearts"].Length - 1].SpriteTexture, Layout.HeartsPile, null, 
                     (GameState.deckManager.CardsInPlay["Hearts"].Length > 1) ? Color.White : Color.LightSlateGray, 
@@ -153,8 +224,19 @@ namespace Solitare
             {
                 int t = i + 1;
                 string key = "Tableau" + t;
-                foreach(Card c in GameState.deckManager.CardsInPlay[key])
+                if(GameState.deckManager.CardsInPlay[key].Length <= 0)
                 {
+                    spriteBatch.Draw(GameState.cardShadow,
+                        GetTableauPosition(key), 
+                        null, Color.White, 0f, Vector2.Zero, Layout.CardScale, SpriteEffects.None, 0f
+                        );
+
+                }
+
+                foreach (Card c in GameState.deckManager.CardsInPlay[key])
+                {
+                    spriteBatch.Draw(GameState.cardShadow, new Vector2(c.Position.X + shadowOffset, c.Position.Y + shadowOffset), null, Color.White, 0f, Vector2.Zero, Layout.CardScale, SpriteEffects.None, 0f);
+
                     if (c.IsFaceDown)
                     {
                         spriteBatch.Draw(GameState.cardBack.SpriteTexture, c.Position, null, Color.LightBlue, 0f, Vector2.Zero, Layout.CardScale, SpriteEffects.None, 0f);
@@ -166,11 +248,36 @@ namespace Solitare
                 }
             }
 
+            //Draws the buttons
+            spriteBatch.Draw(GameState.playAgainButton, new Vector2(Layout.PlayAgain.X - Layout.ButtonRadius, Layout.PlayAgain.Y - Layout.ButtonRadius), null, Color.Black * 0.6f, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
+
+            spriteBatch.Draw(GameState.playAgainButton, new Vector2(Layout.PlayAgain.X - Layout.ButtonRadius, Layout.PlayAgain.Y - Layout.ButtonRadius), null, Color.White, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, 0f);
+
+            spriteBatch.Draw(GameState.exitButton, new Vector2(Layout.Exit.X - Layout.ButtonRadius, Layout.Exit.Y - Layout.ButtonRadius), null, Color.Black * 0.6f, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
+
+            spriteBatch.Draw(GameState.exitButton, new Vector2(Layout.Exit.X - Layout.ButtonRadius, Layout.Exit.Y - Layout.ButtonRadius), null, Color.White, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, 0f);
+
+            //Draws the post-it
+            spriteBatch.Draw(GameState.postit, new Vector2(50, 86), null, Color.Black * 0.6f, 0f, Vector2.Zero, 0.46f, SpriteEffects.None, 0f);
+
+            spriteBatch.Draw(GameState.postit, new Vector2(50, 80), null, Color.White, 0f, Vector2.Zero, 0.45f, SpriteEffects.None, 0f);
+
+            spriteBatch.DrawString(GameState.pencil, "Score", Layout.Score, Color.Black);
+
+            spriteBatch.DrawString(GameState.pencil, GameState.score.ToString(), 
+                new Vector2 (Layout.PlayerScore.X - GameState.pencil.MeasureString(GameState.score.ToString()).X, Layout.PlayerScore.Y), Color.Black);
+
             //Draws the Moving Stack
             if (GameState.msm.StackIsMoving)
             {
                 foreach(Card c in GameState.msm.MovingStack)
                 {
+                    spriteBatch.Draw(GameState.cardShadow,
+                        new Vector2(c.Position.X + shadowOffset * 2,
+                        c.Position.Y + shadowOffset * 2),
+                        null, Color.White, 0f, Vector2.Zero, Layout.CardScale, SpriteEffects.None, 0f
+                        );
+
                     spriteBatch.Draw(c.SpriteTexture, c.Position, null, Color.White, 0f, Vector2.Zero, Layout.CardScale, SpriteEffects.None, 0f);
                 }
             }
@@ -178,11 +285,51 @@ namespace Solitare
             //Draws the Moving Card
             if (GameState.mcm.MovingCard.IsMoving)
             {
+                spriteBatch.Draw(GameState.cardShadow, 
+                    new Vector2(GameState.mcm.MovingCard.Position.X + shadowOffset * 2,
+                    GameState.mcm.MovingCard.Position.Y + shadowOffset * 2), 
+                    null, Color.White, 0f, Vector2.Zero, Layout.CardScale, SpriteEffects.None, 0f
+                    );
+
                 spriteBatch.Draw(GameState.mcm.MovingCard.SpriteTexture, GameState.mcm.MovingCard.Position, null, Color.White, 0f, Vector2.Zero, Layout.CardScale, SpriteEffects.None, 0f);
             }
 
             spriteBatch.End();
         }
+
+        protected Vector2 GetTableauPosition(string key)
+        {
+            if(key == "Tableau1")
+            {
+                return Layout.Tableau1;
+            }
+            else if (key == "Tableau2")
+            {
+                return Layout.Tableau2;
+            }
+            else if (key == "Tableau3")
+            {
+                return Layout.Tableau3;
+            }
+            else if (key == "Tableau4")
+            {
+                return Layout.Tableau4;
+            }
+            else if (key == "Tableau5")
+            {
+                return Layout.Tableau5;
+            }
+            else if (key == "Tableau6")
+            {
+                return Layout.Tableau6;
+            }
+            else if (key == "Tableau7")
+            {
+                return Layout.Tableau7;
+            }
+            return Vector2.Zero;
+        }
+
 
         protected void DrawMenuScene()
         {
@@ -190,9 +337,13 @@ namespace Solitare
 
             spriteBatch.Draw(MenuState.background, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
 
-            spriteBatch.Draw(MenuState.playButton, new Vector2(Layout.MenuPlayButton.X - Layout.ButtonRadius, Layout.MenuPlayButton.Y - Layout.ButtonRadius), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(MenuState.playButton, new Vector2(Layout.MenuPlayButton.X - Layout.ButtonRadius, Layout.MenuPlayButton.Y - Layout.ButtonRadius), null, Color.Black * 0.35f, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
 
-            spriteBatch.Draw(MenuState.exitButton, new Vector2(Layout.MenuExitButton.X - Layout.ButtonRadius, Layout.MenuExitButton.Y - Layout.ButtonRadius), null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(MenuState.playButton, new Vector2(Layout.MenuPlayButton.X - Layout.ButtonRadius, Layout.MenuPlayButton.Y - Layout.ButtonRadius), null, Color.White, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, 0f);
+
+            spriteBatch.Draw(MenuState.exitButton, new Vector2(Layout.MenuExitButton.X - Layout.ButtonRadius, Layout.MenuExitButton.Y - Layout.ButtonRadius), null, Color.Black * 0.35f, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
+
+            spriteBatch.Draw(MenuState.exitButton, new Vector2(Layout.MenuExitButton.X - Layout.ButtonRadius, Layout.MenuExitButton.Y - Layout.ButtonRadius), null, Color.White, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, 0f);
 
             spriteBatch.End();
         }
