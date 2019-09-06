@@ -752,13 +752,6 @@
 /processorParam:TextureFormat=Color
 /build:Images/MenuItems/postit.png
 
-#begin menuFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:menuFont.spritefont
-
 #begin pencil.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

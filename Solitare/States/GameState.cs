@@ -41,6 +41,8 @@ namespace Solitare.States
 
         double clickTimer;
 
+        public static bool canWin;
+
         MouseState mState;
         MouseState pmState;
 
@@ -76,6 +78,8 @@ namespace Solitare.States
             pmState = Mouse.GetState();
 
             clickTimer = 0;
+
+            canWin = false;
 
             mcm = new MovingCardManager();
 
@@ -118,34 +122,50 @@ namespace Solitare.States
                     }
                 }
 
-                deckManager.SendDoubleClicksToFoundation(mState, pmState, gameTime, clickTimer);
-
-                deckManager.ClickToFlipTableauCard(mState, pmState);
-
-                if (cm.DeckPileClick(deckManager))
+                if (!canWin)
                 {
-                    if (deckManager.CardsInPlay["Deck"].Length <= 0)
-                    {
-                        deckManager.ReturnWasteToDeck();
-                    }
-                    else
-                    {
-                        if (deckManager.CardWasAlreadyDrawn)
-                        {
-                            deckManager.AddCardToPile(deckManager.CardsInPlay["Deck"][deckManager.CardsInPlay["Deck"].Length - 1], "Waste");
-                            deckManager.CardsInPlay["Deck"] = deckManager.DownsizePile(deckManager.CardsInPlay["Deck"]);
-                        }
+                    
+                    deckManager.SendDoubleClicksToFoundation(mState, pmState, gameTime, clickTimer);
 
-                        if (deckManager.CardsInPlay["Deck"].Length > 0)
+                    deckManager.ClickToFlipTableauCard(mState, pmState);
+
+                    if (cm.DeckPileClick(deckManager))
+                    {
+                        if (deckManager.CardsInPlay["Deck"].Length <= 0)
                         {
-                            deckManager.DrawACard();
+                            deckManager.ReturnWasteToDeck();
                         }
                         else
                         {
-                            deckManager.CardWasAlreadyDrawn = false;
+                            if (deckManager.CardWasAlreadyDrawn)
+                            {
+                                deckManager.AddCardToPile(deckManager.CardsInPlay["Deck"][deckManager.CardsInPlay["Deck"].Length - 1], "Waste");
+                                deckManager.CardsInPlay["Deck"] = deckManager.DownsizePile(deckManager.CardsInPlay["Deck"]);
+                            }
+
+                            if (deckManager.CardsInPlay["Deck"].Length > 0)
+                            {
+                                deckManager.DrawACard();
+                            }
+                            else
+                            {
+                                deckManager.CardWasAlreadyDrawn = false;
+                            }
                         }
                     }
                 }
+                else
+                {
+                    deckManager.WinGame();
+                    if(deckManager.CardsInPlay["Hearts"].Length > 13
+                        && deckManager.CardsInPlay["Spades"].Length > 13
+                        && deckManager.CardsInPlay["Diamonds"].Length > 13
+                        && deckManager.CardsInPlay["Clubs"].Length > 13)
+                    {
+                        canWin = false;
+                    }
+                }
+                
             }            
 
             if (mcm.CheckIfMovementStopped(mState) || msm.CheckIfMovementStopped(mState))
@@ -185,6 +205,13 @@ namespace Solitare.States
             {
                 mcm.MoveCard(mState, pmState);
             }
+
+            CheckCardsForAnimations(gameTime);
+
+            if (!canWin)
+            {
+                canWin = deckManager.CheckForWin(mcm, msm);
+            }
         }
 
         public override void PostUpdate(GameTime gameTime)
@@ -210,12 +237,38 @@ namespace Solitare.States
             }
             score = hearts + spades + diamonds + clubs;
             score *= 10;
-            if(hearts > 13)
+            if(hearts > 12)
             {
                 score += 120;
             }
-            
+            if (spades > 12)
+            {
+                score += 120;
+            }
+            if (diamonds > 12)
+            {
+                score += 120;
+            }
+            if (clubs > 12)
+            {
+                score += 120;
+            }
+
             pmState = mState;
+        }
+
+        public void CheckCardsForAnimations(GameTime gameTime)
+        {
+            foreach(var kvp in deckManager.CardsInPlay)
+            {
+                if(kvp.Value.Length > 0)
+                {
+                    foreach(Card c in kvp.Value)
+                    {
+                        c.AnimateCardMovement(gameTime);
+                    }
+                }
+            }
         }
     }
 }

@@ -176,10 +176,10 @@ namespace Solitare.Managers
                         {
                             switch (thisCard.Code.First())
                             {
-                                case 'H': AddCardToPile(thisCard, "Hearts"); break;
-                                case 'S': AddCardToPile(thisCard, "Spades"); break;
-                                case 'D': AddCardToPile(thisCard, "Diamonds"); break;
-                                case 'C': AddCardToPile(thisCard, "Clubs"); break;
+                                case 'H':  AddCardToPile(thisCard, "Hearts"); break;
+                                case 'S':  AddCardToPile(thisCard, "Spades"); break;
+                                case 'D':  AddCardToPile(thisCard, "Diamonds"); break;
+                                case 'C':  AddCardToPile(thisCard, "Clubs"); break;
                                 default:
                                     break;
                             }
@@ -235,6 +235,7 @@ namespace Solitare.Managers
         public void DrawACard()
         {
             CardWasAlreadyDrawn = true;
+            CardsInPlay["Deck"][CardsInPlay["Deck"].Length - 1].Position = Layout.DrawPile;
             CardsInPlay["Deck"][CardsInPlay["Deck"].Length - 1].PilePosition = Layout.DrawPile;
             CardsInPlay["Deck"][CardsInPlay["Deck"].Length - 1].CardBox = Layout.MakeCardBox(Layout.DrawPile);
         }
@@ -296,7 +297,7 @@ namespace Solitare.Managers
                                 break;
                         }
                         tempTableaus[i][j].Position = new Vector2(tempPos.X, tempPos.Y + (j * Layout.VerticalOffset));
-                        tempTableaus[i][j].PilePosition = tempPos;
+                        tempTableaus[i][j].PilePosition = tempTableaus[i][j].Position;
                         tempTableaus[i][j].CardBox = Layout.MakeCardBox(tempTableaus[i][j].Position);
                          //Set all but the last card to face down
                         if (j < tempTableaus[i].Length - 1)
@@ -319,6 +320,7 @@ namespace Solitare.Managers
 
         public void AddCardToPile(Card card, string key)
         {
+            //thisCard.AnimateCardMovement(Layout.HeartsPile);
             Vector2 tempPos = new Vector2();
             switch (key)
             {
@@ -337,27 +339,39 @@ namespace Solitare.Managers
                 case "Tableau7": tempPos = Layout.Tableau7; break;
             }
             
-            if(key == "Deck")
+            if(key == "Waste" && card.PilePosition == Layout.DrawPile)
             {
-                if (CardsInPlay["Deck"].Length > 0)
-                {
-                    CardsInPlay["Deck"][CardsInPlay["Deck"].Length - 1].PilePosition = new Vector2();
-                    CardsInPlay["Deck"][CardsInPlay["Deck"].Length - 1].CardBox = new Rectangle();
-                }
-                CardWasAlreadyDrawn = true;
-            }
 
-            if (key.StartsWith("T"))
-            {
-                card.Position = new Vector2(tempPos.X, tempPos.Y + (CardsInPlay[key].Length * Layout.VerticalOffset));
+                card.Position = tempPos;
+                card.PilePosition = tempPos;
             }
             else
             {
-                card.Position = tempPos;
-            }
+                if (key == "Deck")
+                {
+                    if (CardsInPlay["Deck"].Length > 0)
+                    {
+                        CardsInPlay["Deck"][CardsInPlay["Deck"].Length - 1].PilePosition = new Vector2();
+                        CardsInPlay["Deck"][CardsInPlay["Deck"].Length - 1].CardBox = new Rectangle();
+                    }
+                    CardWasAlreadyDrawn = true;
+                }
 
-            card.PilePosition = tempPos;
-            card.CardBox = Layout.MakeCardBox(card.Position);
+                if (key.StartsWith("T"))
+                {
+                    //card.Position = new Vector2(tempPos.X, tempPos.Y + (CardsInPlay[key].Length * Layout.VerticalOffset));
+                    card.PilePosition = new Vector2(tempPos.X, tempPos.Y + (CardsInPlay[key].Length * Layout.VerticalOffset));
+                }
+                else
+                {
+                    //card.Position = tempPos;
+                    card.PilePosition = tempPos;
+                }
+            }
+            
+
+            //card.PilePosition = tempPos;
+            card.CardBox = Layout.MakeCardBox(card.PilePosition);
 
             CardsInPlay[key] = ResizePile(CardsInPlay[key]);
             CardsInPlay[key][CardsInPlay[key].Length - 1] = card;
@@ -411,5 +425,60 @@ namespace Solitare.Managers
                 return true;
             }
         }
+
+        public bool CheckForWin(MovingCardManager mcm, MovingStackManager msm)
+        {
+            if(CardsInPlay["Deck"].Length <= 0 
+                && CardsInPlay["Waste"].Length <= 0
+                && !mcm.MovingCard.IsMoving
+                && !msm.StackIsMoving)
+            {
+                for(int i = 1; i < 8; i++)
+                {
+                    string key = "Tableau" + i;
+                    foreach(Card c in CardsInPlay[key])
+                    {
+                        if (c.IsFaceDown)
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
+            }
+            return false;
+        }
+
+
+        public void WinGame()
+        {
+            Card thisCard;
+            for (int i = 1; i < 8; i++)
+            {
+                string key = "Tableau" + i;
+                if (CardsInPlay[key].Length > 0)
+                {
+                    thisCard = CardsInPlay[key][CardsInPlay[key].Length - 1];
+                    if (thisCard.Code == MakeOneCodeHigher(CardsInPlay["Hearts"][CardsInPlay["Hearts"].Length - 1].Code)
+                            || thisCard.Code == MakeOneCodeHigher(CardsInPlay["Spades"][CardsInPlay["Spades"].Length - 1].Code)
+                            || thisCard.Code == MakeOneCodeHigher(CardsInPlay["Diamonds"][CardsInPlay["Diamonds"].Length - 1].Code)
+                            || thisCard.Code == MakeOneCodeHigher(CardsInPlay["Clubs"][CardsInPlay["Clubs"].Length - 1].Code))
+                    {
+                        switch (thisCard.Code.First())
+                        {
+                            case 'H': AddCardToPile(thisCard, "Hearts"); break;
+                            case 'S': AddCardToPile(thisCard, "Spades"); break;
+                            case 'D': AddCardToPile(thisCard, "Diamonds"); break;
+                            case 'C': AddCardToPile(thisCard, "Clubs"); break;
+                            default:
+                                break;
+                        }
+                        CardsInPlay[key] = DownsizePile(CardsInPlay[key]);
+                    }
+                }
+            }
+        }
     }
+
 }

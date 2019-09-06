@@ -10,16 +10,30 @@ namespace Solitare.Models
 {
     public class MouseInput
     {
-        private const double doubleClickTimer = 500;
+        private const double doubleClickTimer = 300;
+        private static bool wasDoubleClick = false;
 
         public static bool CheckForSingleClick(MouseState previousState)
         {
+            if (wasDoubleClick)
+            {
+                return false;
+            }
             return (previousState.LeftButton == ButtonState.Released) && (Mouse.GetState().LeftButton == ButtonState.Pressed);
         }
 
         public static bool CheckForDoubleClick(MouseState previousState, GameTime gameTime, double clickTimer)
         {
-            return (CheckForSingleClick(previousState) && (gameTime.TotalGameTime.TotalMilliseconds - clickTimer < doubleClickTimer));
+            if((CheckForSingleClick(previousState) && (gameTime.TotalGameTime.TotalMilliseconds - clickTimer < doubleClickTimer)))
+            {
+                wasDoubleClick = true;
+                return true;
+            }
+            else
+            {
+                wasDoubleClick = false;
+            }
+            return false;
         }
     }
 }

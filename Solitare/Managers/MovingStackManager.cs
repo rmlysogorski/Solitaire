@@ -25,7 +25,7 @@ namespace Solitare.Managers
             }
             else
             {
-                if(mState.LeftButton == ButtonState.Pressed)
+                if(mState.LeftButton == ButtonState.Pressed && pmState.LeftButton == ButtonState.Released)
                 {
                     for (int i = 1; i < 8; i++)
                     {

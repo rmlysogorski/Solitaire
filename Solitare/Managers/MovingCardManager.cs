@@ -35,7 +35,7 @@ namespace Solitare.Managers
                         && keyValuePair.Value.Length > 0
                         && keyValuePair.Value[keyValuePair.Value.Length- 1].CardBox.Contains(mState.Position)
                         && !keyValuePair.Value[keyValuePair.Value.Length - 1].IsFaceDown
-                        && mState.LeftButton == ButtonState.Pressed)
+                        && MouseInput.CheckForSingleClick(pmState))
                     {                        
                         movingCard = keyValuePair.Value[keyValuePair.Value.Length - 1];
                         movingCard.IsMoving = true;
@@ -66,31 +66,31 @@ namespace Solitare.Managers
             {
                 deckManager.AddCardToPile(movingCard, "Waste");
             }
-            else if(movingCard.PilePosition == Layout.Tableau1)
+            else if(movingCard.PilePosition == new Vector2(Layout.Tableau1.X, Layout.Tableau1.Y + deckManager.CardsInPlay["Tableau1"].Length * Layout.VerticalOffset))
             {
                 deckManager.AddCardToPile(movingCard, "Tableau1");
             }
-            else if (movingCard.PilePosition == Layout.Tableau2)
+            else if (movingCard.PilePosition == new Vector2(Layout.Tableau2.X, Layout.Tableau2.Y + deckManager.CardsInPlay["Tableau2"].Length * Layout.VerticalOffset))
             {
                 deckManager.AddCardToPile(movingCard, "Tableau2");
             }
-            else if (movingCard.PilePosition == Layout.Tableau3)
+            else if (movingCard.PilePosition == new Vector2(Layout.Tableau3.X, Layout.Tableau3.Y + deckManager.CardsInPlay["Tableau3"].Length * Layout.VerticalOffset))
             {
                 deckManager.AddCardToPile(movingCard, "Tableau3");
             }
-            else if (movingCard.PilePosition == Layout.Tableau4)
+            else if (movingCard.PilePosition == new Vector2(Layout.Tableau4.X, Layout.Tableau4.Y + deckManager.CardsInPlay["Tableau4"].Length * Layout.VerticalOffset))
             {
                 deckManager.AddCardToPile(movingCard, "Tableau4");
             }
-            else if (movingCard.PilePosition == Layout.Tableau5)
+            else if (movingCard.PilePosition == new Vector2(Layout.Tableau5.X, Layout.Tableau5.Y + deckManager.CardsInPlay["Tableau5"].Length * Layout.VerticalOffset))
             {
                 deckManager.AddCardToPile(movingCard, "Tableau5");
             }
-            else if (movingCard.PilePosition == Layout.Tableau6)
+            else if (movingCard.PilePosition == new Vector2(Layout.Tableau6.X, Layout.Tableau6.Y + deckManager.CardsInPlay["Tableau6"].Length * Layout.VerticalOffset))
             {
                 deckManager.AddCardToPile(movingCard, "Tableau6");
             }
-            else if (movingCard.PilePosition == Layout.Tableau7)
+            else if (movingCard.PilePosition == new Vector2(Layout.Tableau7.X, Layout.Tableau7.Y + deckManager.CardsInPlay["Tableau7"].Length * Layout.VerticalOffset))
             {
                 deckManager.AddCardToPile(movingCard, "Tableau7");
             }

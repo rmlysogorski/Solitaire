@@ -17,6 +17,8 @@ namespace Solitare.Models
         private bool isFaceDown;
         private bool isMoving;
         private string code;
+        private float rise = 0;
+        private float run = 0;
 
         public Texture2D SpriteTexture { get => spriteTexture; set => spriteTexture = value; }
         public Vector2 Position { get => position; set => position = value; }
@@ -48,6 +50,34 @@ namespace Solitare.Models
         public override void Update(GameTime gameTime)
         {
             
+        }
+
+        public void AnimateCardMovement(GameTime gameTime)
+        {
+            float distance = Vector2.Distance(position, PilePosition);
+            float speed = 1 * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (rise == 0)
+            {
+                rise = (position.Y - PilePosition.Y);
+            }
+            if(run == 0)
+            {
+                run = (position.X - PilePosition.X);
+            }
+
+            if (distance <= 100)
+            {
+                position = PilePosition;
+                rise = 0;
+                run = 0;
+            }
+            else
+            {
+                position = new Vector2(
+                    position.X - run / speed, 
+                    position.Y - rise / speed
+                    );
+            }
         }
     }
 }
