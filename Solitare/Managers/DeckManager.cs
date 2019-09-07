@@ -161,14 +161,14 @@ namespace Solitare.Managers
         //    return card;
         //}
 
-        public void SendDoubleClicksToFoundation(MouseState mState, MouseState pmState, GameTime gameTime, double clickTimer)
+        public void SendDoubleClicksToFoundation(MouseState mState, MouseState pmState, GameTime gameTime, double clickTimer, Vector2 smPosition)
         {
             foreach (var keyValuePair in CardsInPlay)
             {
                 if (keyValuePair.Value.Length > 0)
                 {
                     Card thisCard = keyValuePair.Value[keyValuePair.Value.Length - 1];
-                    if (thisCard.CardBox.Contains(mState.Position) && MouseInput.CheckForDoubleClick(pmState, gameTime, clickTimer))
+                    if (thisCard.CardBox.Contains(smPosition) && MouseInput.CheckForDoubleClick(pmState, gameTime, clickTimer))
                     {
                         if (thisCard.Code == MakeOneCodeHigher(CardsInPlay["Hearts"][CardsInPlay["Hearts"].Length - 1].Code)
                             || thisCard.Code == MakeOneCodeHigher(CardsInPlay["Spades"][CardsInPlay["Spades"].Length - 1].Code)
@@ -378,7 +378,7 @@ namespace Solitare.Managers
             CardsInPlay[key][CardsInPlay[key].Length - 1] = card;
         }
 
-        public void ClickToFlipTableauCard(MouseState mState, MouseState pmState)
+        public void ClickToFlipTableauCard(MouseState mState, MouseState pmState, Vector2 smPosition)
         {
             for (int i = 1; i < 8; i++)
             {
@@ -386,7 +386,7 @@ namespace Solitare.Managers
                 if (CardsInPlay[key].Length > 0
                     && CardsInPlay[key][CardsInPlay[key].Length - 1].IsFaceDown
                     && MouseInput.CheckForSingleClick(pmState)
-                    && CardsInPlay[key][CardsInPlay[key].Length - 1].CardBox.Contains(mState.Position))
+                    && CardsInPlay[key][CardsInPlay[key].Length - 1].CardBox.Contains(smPosition))
                 {
                     CardsInPlay[key][CardsInPlay[key].Length - 1].IsFaceDown = false;
                 }

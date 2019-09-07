@@ -17,7 +17,7 @@ namespace Solitare.Managers
         public Card[] MovingStack { get => movingStack; set => movingStack = value; }
         public bool StackIsMoving { get => stackIsMoving; set => stackIsMoving = value; }
 
-        public bool CheckForMovement(DeckManager deckManager, MouseState mState, MouseState pmState)
+        public bool CheckForMovement(DeckManager deckManager, MouseState mState, MouseState pmState, Vector2 smPosition)
         {
             if (stackIsMoving)
             {
@@ -42,7 +42,7 @@ namespace Solitare.Managers
                                     cardbox.Y = deckManager.CardsInPlay[key][j].CardBox.Y;
                                     cardbox.Width = deckManager.CardsInPlay[key][j].CardBox.Width;
                                     cardbox.Height = Layout.VerticalOffset;
-                                    if (cardbox.Contains(mState.Position))
+                                    if (cardbox.Contains(smPosition))
                                     {
                                         //We have a hit so add this card and all subsequent cards to the movingStack Array
                                         //And also Remove them from this pile
@@ -68,13 +68,13 @@ namespace Solitare.Managers
             return false;
         }
 
-        public void MoveStack(MouseState mState, MouseState pmState)
+        public void MoveStack(MouseState mState, MouseState pmState, Vector2 smPosition, Vector2 psmPosition)
         {
             for(int i = 0; i < movingStack.Length; i++)
             {
                 movingStack[i].Position = new Vector2(
-                    movingStack[i].Position.X + mState.Position.X - pmState.Position.X,
-                    movingStack[i].Position.Y + mState.Position.Y - pmState.Position.Y
+                    movingStack[i].Position.X + smPosition.X - psmPosition.X,
+                    movingStack[i].Position.Y + smPosition.Y - psmPosition.Y
                     );
                 if(i == 0)
                 {

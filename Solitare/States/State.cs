@@ -29,7 +29,7 @@ namespace Solitare.States
             game = _game;
         }
 
-        public abstract void Draw(GameTime gameTime, Renderer r);
+        public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);
         public abstract void Update(GameTime gameTime);
         public abstract void PostUpdate(GameTime gameTime);
 

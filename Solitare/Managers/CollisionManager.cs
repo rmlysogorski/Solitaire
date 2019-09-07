@@ -13,18 +13,20 @@ namespace Solitare.Managers
     {
         private MouseState mState;
         private MouseState pmState;
+        private Vector2 smPosition;
 
-        public CollisionManager(MouseState m, MouseState p)
+        public CollisionManager(MouseState m, MouseState p, Vector2 smp)
         {
             mState = m;
             pmState = p;
+            smPosition = smp;
         }
         //Checks for Mouse Click on Deck Pile
         public bool DeckPileClick(DeckManager deckManager)
         {
             return (MouseInput.CheckForSingleClick(pmState) && Layout.MakeCardBox(
                 new Vector2(Layout.Deck.X + deckManager.CardsInPlay["Deck"].Length * 3 - 6, Layout.Deck.Y))
-                .Contains(mState.Position));
+                .Contains(smPosition));
         }
         public bool CheckCollisions(Card movingCard, DeckManager deckManager)
         {

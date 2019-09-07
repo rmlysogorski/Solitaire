@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Solitare.Managers;
 using Solitare.States;
+using System.Collections.Generic;
 
 namespace Solitare
 {
@@ -13,10 +14,13 @@ namespace Solitare
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Renderer r;
+
+        List<DisplayMode> displayModes = new List<DisplayMode>();
 
         private State currentState;
         private State nextState;
+
+        private int modeIndex = 0;
 
         public void ChangeToGameState()
         {
@@ -31,7 +35,15 @@ namespace Solitare
             graphics.PreferredBackBufferHeight = 1080;
             graphics.IsFullScreen = true;
             IsMouseVisible = true;
-            
+            foreach (DisplayMode mode in GraphicsAdapter.DefaultAdapter.SupportedDisplayModes)
+            {
+                displayModes.Add(mode);
+                if(mode.Width == 1920 && mode.Height == 1080)
+                {
+                    modeIndex = displayModes.Count - 1;
+                }
+            }
+
         }
 
         /// <summary>
@@ -53,7 +65,6 @@ namespace Solitare
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            r = new Renderer(graphics.GraphicsDevice, spriteBatch);
 
             //Load Game Assets
             
@@ -81,9 +92,26 @@ namespace Solitare
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            if (Keyboard.GetState().IsKeyDown(Keys.F))
+            {
+                graphics.IsFullScreen = !graphics.IsFullScreen;
+                graphics.ApplyChanges();
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
+                modeIndex++;
+                if(modeIndex > displayModes.Count - 1)
+                {
+                    modeIndex = 0;
+                }
+                graphics.PreferredBackBufferWidth = displayModes[modeIndex].Width;
+                graphics.PreferredBackBufferHeight = displayModes[modeIndex].Height;
+                graphics.ApplyChanges();
+            }
             //This is where we can change the state
             //Inside the state, set something to call the change state method on click
-            if(nextState != null)
+            if (nextState != null)
             {
                 currentState = nextState;
                 nextState = null;
@@ -101,9 +129,20 @@ namespace Solitare
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            var scaleX = (float)graphics.PreferredBackBufferWidth / 1920;
+            var scaleY = (float)graphics.PreferredBackBufferHeight / 1080;
+            var matrix = Matrix.CreateScale(scaleX, scaleY, 1.0f);
 
-            currentState.Draw(gameTime, r);
+            GraphicsDevice.Clear(Color.Black);
+
+            spriteBatch.Begin(SpriteSortMode.Immediate,
+                      BlendState.AlphaBlend,
+                      null, null, null, null,
+                      transformMatrix: matrix);
+
+            currentState.Draw(gameTime, spriteBatch);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

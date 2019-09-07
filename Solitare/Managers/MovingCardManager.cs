@@ -18,7 +18,7 @@ namespace Solitare.Managers
         {
             movingCard = new Card();
         }
-        public bool CheckForMovement(DeckManager deckManager, MouseState mState, MouseState pmState)
+        public bool CheckForMovement(DeckManager deckManager, MouseState mState, MouseState pmState, Vector2 smPosition)
         {
             if (movingCard.IsMoving)
             {
@@ -33,7 +33,7 @@ namespace Solitare.Managers
                         && keyValuePair.Key != "Diamonds"
                         && keyValuePair.Key != "Clubs"
                         && keyValuePair.Value.Length > 0
-                        && keyValuePair.Value[keyValuePair.Value.Length- 1].CardBox.Contains(mState.Position)
+                        && keyValuePair.Value[keyValuePair.Value.Length- 1].CardBox.Contains(smPosition)
                         && !keyValuePair.Value[keyValuePair.Value.Length - 1].IsFaceDown
                         && MouseInput.CheckForSingleClick(pmState))
                     {                        
@@ -96,11 +96,11 @@ namespace Solitare.Managers
             }
             movingCard = new Card();
         }
-        public void MoveCard(MouseState mState, MouseState pmState)
+        public void MoveCard(MouseState mState, MouseState pmState, Vector2 smPosition, Vector2 psmPosition)
         {
             movingCard.Position = new Vector2(
-                    movingCard.Position.X + mState.Position.X - pmState.Position.X,
-                    movingCard.Position.Y + mState.Position.Y - pmState.Position.Y
+                    movingCard.Position.X + smPosition.X - psmPosition.X,
+                    movingCard.Position.Y + smPosition.Y - psmPosition.Y
                     );
             movingCard.CardBox = Layout.MakeCardBox(movingCard.Position);
         }

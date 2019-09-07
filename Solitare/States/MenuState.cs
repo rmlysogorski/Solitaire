@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using ResolutionBuddy;
 using Solitare.Models;
 
 namespace Solitare.States
@@ -42,16 +43,32 @@ namespace Solitare.States
             pmState = Mouse.GetState();
         }
 
-        public override void Draw(GameTime gameTime, Renderer r)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            r.Draw(gameTime, "menu");
+            spriteBatch.Draw(background, Vector2.Zero, null, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+
+            spriteBatch.Draw(playButton, new Vector2(Layout.MenuPlayButton.X - Layout.ButtonRadius, Layout.MenuPlayButton.Y - Layout.ButtonRadius), null, Color.Black * 0.35f, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
+
+            spriteBatch.Draw(playButton, new Vector2(Layout.MenuPlayButton.X - Layout.ButtonRadius, Layout.MenuPlayButton.Y - Layout.ButtonRadius), null, Color.White, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, 0f);
+
+            spriteBatch.Draw(exitButton, new Vector2(Layout.MenuExitButton.X - Layout.ButtonRadius, Layout.MenuExitButton.Y - Layout.ButtonRadius), null, Color.Black * 0.35f, 0f, Vector2.Zero, 0.75f, SpriteEffects.None, 0f);
+
+            spriteBatch.Draw(exitButton, new Vector2(Layout.MenuExitButton.X - Layout.ButtonRadius, Layout.MenuExitButton.Y - Layout.ButtonRadius), null, Color.White, 0f, Vector2.Zero, 0.7f, SpriteEffects.None, 0f);
+
         }
-        
+
         public override void Update(GameTime gameTime)
         {
+            var scaleX = (float)graphicsDevice.PresentationParameters.BackBufferWidth / 1920;
+            var scaleY = (float)graphicsDevice.PresentationParameters.BackBufferHeight / 1080;
+            var matrix = Matrix.CreateScale(scaleX, scaleY, 1.0f);
+
             mState = Mouse.GetState();
-            playDist = Vector2.Distance(Layout.MenuPlayButton, new Vector2(mState.X, mState.Y));
-            exitDist = Vector2.Distance(Layout.MenuExitButton, new Vector2(mState.X, mState.Y));
+            var mousePosition = new Vector2(mState.X, mState.Y);
+            var smPosition = Vector2.Transform(mousePosition, Matrix.Invert(matrix));
+
+            playDist = Vector2.Distance(Layout.MenuPlayButton, new Vector2(smPosition.X, smPosition.Y));
+            exitDist = Vector2.Distance(Layout.MenuExitButton, new Vector2(smPosition.X, smPosition.Y));
 
             if (playDist < Layout.ButtonRadius
                 || exitDist < Layout.ButtonRadius)
