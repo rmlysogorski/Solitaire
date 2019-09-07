@@ -37,6 +37,9 @@ namespace Solitare.States
         float exitDist;
 
         SoundEffect selectMenuItem;
+        SoundEffect draw;
+        SoundEffect returnToDeck;
+        SoundEffect placeCard;
         bool smiPlayed;
 
         double clickTimer;
@@ -73,6 +76,9 @@ namespace Solitare.States
             deckManager.PopulateTableaus();
 
             selectMenuItem = content.Load<SoundEffect>("Sounds/SoundEffects/selectMenuItem");
+            draw = content.Load<SoundEffect>("Sounds/SoundEffects/draw");
+            returnToDeck = content.Load<SoundEffect>("Sounds/SoundEffects/returnToDeck");
+            placeCard = content.Load<SoundEffect>("Sounds/SoundEffects/placeCard");
             smiPlayed = false;
 
             pmState = Mouse.GetState();
@@ -105,7 +111,7 @@ namespace Solitare.States
                 {
                     if (!smiPlayed)
                     {
-                        selectMenuItem.Play();
+                        PlaySoundEffect(selectMenuItem, 0.2f, 0.3f);
                         smiPlayed = true;
                     }
                 }
@@ -134,6 +140,7 @@ namespace Solitare.States
                         if (deckManager.CardsInPlay["Deck"].Length <= 0)
                         {
                             deckManager.ReturnWasteToDeck();
+                            PlaySoundEffect(returnToDeck, 0.2f, -0.5f);
                         }
                         else
                         {
@@ -151,6 +158,8 @@ namespace Solitare.States
                             {
                                 deckManager.CardWasAlreadyDrawn = false;
                             }
+
+                            PlaySoundEffect(draw, 0.3f, 0.8f);
                         }
                     }
                 }
@@ -194,6 +203,8 @@ namespace Solitare.States
                         msm.ReturnStackToPile(deckManager);
                     }
                 }
+
+                PlaySoundEffect(placeCard, 0.1f, 0.6f);
             }
 
             if(!mcm.MovingCard.IsMoving && msm.CheckForMovement(deckManager, mState, pmState))
@@ -269,6 +280,15 @@ namespace Solitare.States
                     }
                 }
             }
+        }
+
+        public void PlaySoundEffect(SoundEffect se, float volume = 1.0f, float pitch = 0.0f, float pan = 0.0f)
+        {
+            SoundEffectInstance sei = se.CreateInstance();
+            sei.Volume = volume;
+            sei.Pitch = pitch;
+            sei.Pan = pan;
+            sei.Play();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -32,7 +33,7 @@ namespace Solitare.Managers
 
         private bool cardWasAlreadyDrawn;
         private static Random rand = new Random();
-        
+
         public Dictionary<string, Card[]> CardsInPlay { get => cardsInPlay; set => cardsInPlay = value; }
         public bool CardWasAlreadyDrawn { get => cardWasAlreadyDrawn; set => cardWasAlreadyDrawn = value; }
 

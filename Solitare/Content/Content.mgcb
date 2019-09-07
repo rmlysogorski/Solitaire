@@ -759,6 +759,24 @@
 /processorParam:TextureFormat=Compressed
 /build:pencil.spritefont
 
+#begin Sounds/SoundEffects/draw.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffects/draw.wav
+
+#begin Sounds/SoundEffects/placeCard.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffects/placeCard.wav
+
+#begin Sounds/SoundEffects/returnToDeck.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/SoundEffects/returnToDeck.wav
+
 #begin Sounds/SoundEffects/selectMenuItem.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

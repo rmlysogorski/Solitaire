@@ -58,7 +58,10 @@ namespace Solitare.States
             {
                 if (!smiPlayed)
                 {
-                    selectMenuItem.Play();
+                    SoundEffectInstance smi = selectMenuItem.CreateInstance();
+                    smi.Volume = 0.2f;
+                    smi.Pitch = 0.5f;
+                    smi.Play();
                     smiPlayed = true;
                 }
             }
